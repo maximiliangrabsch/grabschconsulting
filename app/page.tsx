@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import {
   CheckCircle,
@@ -21,8 +22,6 @@ import {
 
 const CALENDLY_URL = "https://calendly.com/max-developer-consult/30min";
 
-
-
 // ── Animation variants ───────────────────────────────────────────────────────
 
 const fadeUp = {
@@ -36,33 +35,254 @@ const fadeUp = {
 
 const stagger = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
+
+// ── Typing animation ─────────────────────────────────────────────────────────
+
+function TypedCode({ code, isActive }: { code: string; isActive: boolean }) {
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    if (!isActive) return;
+    setDisplayed("");
+    let i = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
+      if (i >= code.length) return;
+      i++;
+      setDisplayed(code.slice(0, i));
+      timer = setTimeout(tick, 16);
+    };
+
+    const start = setTimeout(tick, 400);
+    return () => { clearTimeout(start); clearTimeout(timer); };
+  }, [isActive, code]);
+
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl p-5 select-none">
+      <pre className="whitespace-pre-wrap break-words font-mono text-[9px] leading-[1.5] text-emerald-400/20">
+        {displayed}
+        {displayed.length < code.length && isActive && (
+          <span className="animate-pulse text-emerald-400/40">▋</span>
+        )}
+      </pre>
+    </div>
+  );
+}
+
+// ── Animated counter ─────────────────────────────────────────────────────────
+
+function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = 1600;
+    const start = Date.now();
+    const animate = () => {
+      const progress = Math.min((Date.now() - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * value));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, value]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+// ── Tech Stack card ───────────────────────────────────────────────────────────
+
+interface TechStack {
+  Icon: React.ElementType;
+  title: string;
+  desc: string;
+  code: string;
+}
+
+function TechStackCard({ Icon, title, desc, code }: TechStack) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={fadeUp}
+      whileHover={{ scale: 1.025, y: -3 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-primary-500/40 hover:bg-white/[0.08]"
+      style={{ backdropFilter: "blur(8px)" }}
+    >
+      {/* Typed code background */}
+      <TypedCode code={code} isActive={isInView} />
+
+      {/* Hover glow overlay */}
+      <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-primary-600/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+      {/* Content sits above */}
+      <div className="relative z-10">
+        <motion.div
+          className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600/80 text-white"
+          whileHover={{ rotate: 8, scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        >
+          <Icon className="h-5 w-5" />
+        </motion.div>
+        <h3 className="mb-2 font-semibold text-white">{title}</h3>
+        <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+// ── Why-Me card ───────────────────────────────────────────────────────────────
+
+interface WhyMeItem {
+  Icon: React.ElementType;
+  title: string;
+  desc: string;
+  statValue: number;
+  statSuffix: string;
+  statLabel: string;
+}
+
+function WhyMeCard({ Icon, title, desc, statValue, statSuffix, statLabel }: WhyMeItem) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors hover:border-primary-500/30 hover:bg-white/[0.08]"
+    >
+      {/* Animated stat number */}
+      <div className="mb-4 font-mono text-4xl font-bold tracking-tight text-primary-400">
+        <AnimatedCounter value={statValue} suffix={statSuffix} />
+      </div>
+
+      {/* Icon with spring hover */}
+      <motion.div
+        className="mb-3 inline-flex h-10 w-10 cursor-default items-center justify-center rounded-lg bg-primary-600 text-white"
+        whileHover={{ scale: 1.15, rotate: 6 }}
+        transition={{ type: "spring", stiffness: 400, damping: 14 }}
+      >
+        <Icon className="h-5 w-5" />
+      </motion.div>
+
+      <h3 className="mb-1 font-semibold text-white">{title}</h3>
+      <p className="mb-2 text-xs text-neutral-500">{statLabel}</p>
+      <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
+    </motion.div>
+  );
+}
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
-const techStacks = [
-  { Icon: Brain,  title: "AI / ML",    desc: "Python, PyTorch, LangChain – KI und Machine Learning." },
-  { Icon: Server, title: "Backend",    desc: "Node.js, Go, Java – skalierbare APIs und Systeme." },
-  { Icon: Layers, title: "Frontend",   desc: "React, Next.js, TypeScript – moderne Web-Applikationen." },
-  { Icon: Code2,  title: "Full-Stack", desc: "End-to-End-Entwicklung für Web und Cloud-Plattformen." },
+const techStacks: TechStack[] = [
+  {
+    Icon: Brain,
+    title: "AI / ML",
+    desc: "Python, PyTorch, LangChain – KI und Machine Learning.",
+    code: `model = nn.Sequential(
+  nn.Linear(512, 256),
+  nn.ReLU(),
+  nn.Dropout(0.2),
+  nn.Linear(256, 10)
+)
+
+for epoch in range(100):
+  output = model(X_train)
+  loss = loss_fn(output, y)
+  optimizer.zero_grad()
+  loss.backward()
+  optimizer.step()`,
+  },
+  {
+    Icon: Server,
+    title: "Backend",
+    desc: "Node.js, Go, Java – skalierbare APIs und Systeme.",
+    code: `app.get('/api/users',
+  async (req, res) => {
+    const { page } = req.query
+    const users = await db
+      .users
+      .findAll({ page })
+    res.json({
+      data: users,
+      total: users.count
+    })
+  }
+)`,
+  },
+  {
+    Icon: Layers,
+    title: "Frontend",
+    desc: "React, Next.js, TypeScript – moderne Web-Applikationen.",
+    code: `const Dashboard = () => {
+  const [data, setData]
+    = useState<Data>(null)
+
+  useEffect(() => {
+    api.get('/dashboard')
+       .then(r => r.json())
+       .then(setData)
+  }, [])
+
+  return (
+    <Layout>
+      <DataGrid data={data} />
+    </Layout>
+  )
+}`,
+  },
+  {
+    Icon: Code2,
+    title: "Full-Stack",
+    desc: "End-to-End-Entwicklung für Web und Cloud-Plattformen.",
+    code: `export default async
+function Page() {
+  const projects = await
+    prisma.project.findMany({
+      where: { active: true },
+      include: { team: true }
+    })
+
+  return (
+    <main>
+      <ProjectList
+        data={projects}
+      />
+    </main>
+  )
+}`,
+  },
 ];
 
-const whyMe = [
+const whyMe: WhyMeItem[] = [
   {
     Icon: Code2,
     title: "Erfahrenes Entwickler-Netzwerk",
     desc: "Etabliertes Netzwerk vorgeprüfter Teams – sofort verfügbar.",
+    statValue: 50,
+    statSuffix: "+",
+    statLabel: "Entwickler im Netzwerk",
   },
   {
     Icon: Shield,
     title: "Technisches Screening",
     desc: "Jeder Kandidat wird persönlich technisch geprüft.",
+    statValue: 100,
+    statSuffix: "%",
+    statLabel: "Kandidaten persönlich geprüft",
   },
   {
     Icon: Zap,
     title: "Schnelle Ergebnisse",
     desc: "Erste Kandidaten in 7 bis 14 Tagen.",
+    statValue: 14,
+    statSuffix: " Tage",
+    statLabel: "bis zum ersten Kandidaten",
   },
 ];
 
@@ -94,15 +314,6 @@ const process = [
 ];
 
 // ── Gradient helpers ─────────────────────────────────────────────────────────
-//
-// Page flows dark → light:
-//   #080e1f  hero
-//   #10102a  für wen
-//   #1a1a2e  prozess
-//   #22223a  tech stacks
-//   #2d2d46  warum ich
-//   #3a3a58  cta
-//   #e8e8f0  footer
 
 const G = {
   hero:      { background: "#080e1f" },
@@ -131,17 +342,13 @@ export default function Home() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Base dark overlay for readability */}
         <div className="absolute inset-0" style={{ background: "rgba(8,14,31,0.82)" }} />
-        {/* Mobile: slightly heavier */}
         <div className="absolute inset-0 sm:hidden" style={{ background: "rgba(8,14,31,0.07)" }} />
-        {/* Bottom fade — blends the image into the next section (#080e1f) */}
         <div
           className="pointer-events-none absolute bottom-0 left-0 right-0 z-10"
           style={{
             height: "220px",
-            background:
-              "linear-gradient(to bottom, transparent 0%, rgba(8,14,31,0.6) 45%, rgba(8,14,31,0.9) 75%, #080e1f 100%)",
+            background: "linear-gradient(to bottom, transparent 0%, rgba(8,14,31,0.6) 45%, rgba(8,14,31,0.9) 75%, #080e1f 100%)",
           }}
         />
         <div className="pointer-events-none absolute left-1/2 top-0 z-10 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-primary-700/15 blur-3xl" />
@@ -262,14 +469,8 @@ export default function Home() {
             </motion.div>
 
             <motion.div variants={stagger} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {techStacks.map(({ Icon, title, desc }) => (
-                <motion.div key={title} variants={fadeUp} className="rounded-2xl border border-white/10 bg-white/5 p-6 transition-colors hover:bg-white/[0.08]">
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600/80 text-white">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-white">{title}</h3>
-                  <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
-                </motion.div>
+              {techStacks.map((stack) => (
+                <TechStackCard key={stack.title} {...stack} />
               ))}
             </motion.div>
           </motion.div>
@@ -290,14 +491,8 @@ export default function Home() {
             </motion.div>
 
             <motion.div variants={stagger} className="grid gap-5 md:grid-cols-3">
-              {whyMe.map(({ Icon, title, desc }) => (
-                <motion.div key={title} variants={fadeUp} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-white">{title}</h3>
-                  <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
-                </motion.div>
+              {whyMe.map((item) => (
+                <WhyMeCard key={item.title} {...item} />
               ))}
             </motion.div>
           </motion.div>
@@ -336,7 +531,6 @@ export default function Home() {
       <footer style={G.footer} className="py-3">
         <div className="mx-auto max-w-5xl px-6">
           <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
-            {/* Logo */}
             <Image
               src="/MRGconsulting.png"
               alt="MRG Consulting Logo"
@@ -345,11 +539,9 @@ export default function Home() {
               className="h-20 w-auto object-contain"
               style={{ mixBlendMode: "multiply" }}
             />
-
-            {/* Links */}
             <div className="flex items-center gap-4 text-sm text-neutral-600">
               <a
-                href="https://calendly.com/max-developer-consult/30min"
+                href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition hover:text-neutral-900"
@@ -359,7 +551,7 @@ export default function Home() {
               <span className="text-neutral-400">·</span>
               <Link
                 href="/impressum"
-                className="transition hover:text-neutral-900 underline underline-offset-2"
+                className="underline underline-offset-2 transition hover:text-neutral-900"
               >
                 Impressum
               </Link>

@@ -1,0 +1,14 @@
+{
+  "name": "MRG Consulting",
+  "short_name": "MRG",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#1a2744",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
