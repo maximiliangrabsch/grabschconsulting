@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "MRG Consulting",
-  description: "MRG Consulting – Professionelle Beratungsleistungen",
+  description: "MRG Consulting – Vorgeprüfte Remote-Entwickler für Ihr Projekt",
   icons: {
     icon: { url: "/icon.png", type: "image/png", sizes: "192x192" },
     apple: { url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" },
@@ -29,10 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="de"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col bg-surface-1 text-white">
+        <Header />
+        <div className="flex flex-1 flex-col">{children}</div>
+        <Footer />
+      </body>
     </html>
   );
 }
