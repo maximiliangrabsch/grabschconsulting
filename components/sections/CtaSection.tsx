@@ -45,7 +45,7 @@ export function CtaSection() {
           </motion.h2>
 
           <motion.p variants={fadeUp} className="text-lg text-neutral-400">
-            Kostenloses 15-Minuten-Gespräch — kein Vertriebsdruck.
+            Kostenloses 15-Minuten-Gespräch.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-3">
