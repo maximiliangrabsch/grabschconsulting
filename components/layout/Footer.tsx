@@ -16,17 +16,19 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand */}
           <div>
-            {/* Crop to ibex circle only (top ~65% of the 1024×1536 image).
-                mix-blend-mode:screen makes the inverted-white background
-                invisible against the dark footer, leaving only the white ibex. */}
-            <div className="relative overflow-hidden" style={{ width: 96, height: 96 }}>
+            {/* Crop to ibex only:
+                - Container 100×76px shows top ~53% of image → globe+ibex, no text
+                - contrast(999%) pushes inverted white bg to pure black
+                - mix-blend-mode:screen renders pure black as fully transparent
+                  against the dark footer → zero outline, only white ibex remains */}
+            <div className="relative overflow-hidden" style={{ width: 100, height: 76 }}>
               <Image
                 src="/MRGconsulting.png"
                 alt="MRG Consulting"
                 fill
                 className="object-cover object-top"
                 style={{
-                  filter: "invert(1) brightness(2)",
+                  filter: "invert(1) contrast(999%) brightness(1.8)",
                   mixBlendMode: "screen",
                 }}
               />
