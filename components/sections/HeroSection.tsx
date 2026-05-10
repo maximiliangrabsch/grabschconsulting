@@ -13,7 +13,7 @@ export function HeroSection() {
         backgroundColor: "#080e1f",
         backgroundImage: "url('/hero-background.png')",
         backgroundSize: "cover",
-        backgroundPosition: "center center",
+        backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
       }}
     >
