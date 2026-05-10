@@ -4,33 +4,23 @@ import { motion } from "framer-motion";
 import { Heart, Zap, Star, ArrowRight } from "lucide-react";
 import { fadeUp, slideInLeft, stagger } from "@/lib/animations";
 import { SectionLabel } from "@/components/ui/SectionLabel";
-import { StatsSection } from "@/components/sections/StatsSection";
 import { CALENDLY_URL } from "@/lib/constants";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
+import { useT } from "@/lib/translations";
+import { StatsSection } from "@/components/sections/StatsSection";
 
-const values = [
-  {
-    Icon: Heart,
-    title: "Ehrlichkeit",
-    desc: "Klare Kommunikation, keine leeren Versprechen. Wir sagen, was möglich ist — und halten, was wir sagen.",
-  },
-  {
-    Icon: Star,
-    title: "Qualität",
-    desc: "Lieber drei perfekte Matches als zwanzig unpassende Profile. Qualität vor Quantität.",
-  },
-  {
-    Icon: Zap,
-    title: "Geschwindigkeit",
-    desc: "Erste Profile in Tagen, nicht Wochen. Ihr Projekt kann nicht warten — wir auch nicht.",
-  },
-];
+const VALUE_ICONS = [Heart, Star, Zap];
 
 export default function About() {
+  const { lang } = useLanguage();
+  const t = useT(lang);
+  const a = t.about;
+
   return (
     <main className="antialiased">
       {/* Founder Hero */}
-      <section className="relative overflow-hidden py-32 md:py-44" style={{ background: "#080e1f" }}>
+      <section className="relative overflow-hidden py-20 md:py-28" style={{ background: "#080e1f" }}>
         <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary-700/15 blur-3xl" />
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
@@ -46,16 +36,12 @@ export default function About() {
           >
             {/* Text */}
             <motion.div variants={slideInLeft} className="lg:col-span-3">
-              <SectionLabel>Über MRG Consulting</SectionLabel>
+              <SectionLabel>{a.label}</SectionLabel>
               <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
-                Recruiting von einem Entwickler —{" "}
-                <span className="gradient-text">für Entwickler.</span>
+                {a.headline1}{" "}
+                <span className="gradient-text">{a.headline2}</span>
               </h1>
-              <p className="mt-5 text-lg leading-relaxed text-neutral-400">
-                Maximilian Grabsch gründete MRG Consulting mit einem klaren Ziel: Technisches
-                Talent und Unternehmen zusammenbringen — ohne Umwege und ohne Recruiter,
-                die Code nicht lesen können.
-              </p>
+              <p className="mt-5 text-lg leading-relaxed text-neutral-400">{a.sub}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
                   href={CALENDLY_URL}
@@ -63,14 +49,14 @@ export default function About() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-500"
                 >
-                  Kennenlernen
+                  {a.meetBtn}
                   <ArrowRight className="h-4 w-4" />
                 </a>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-6 py-3 text-sm font-semibold text-neutral-300 transition hover:border-white/30 hover:text-white"
                 >
-                  Kontakt aufnehmen
+                  {a.contactBtn}
                 </Link>
               </div>
             </motion.div>
@@ -88,8 +74,8 @@ export default function About() {
                   <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-primary-600/20 text-primary-400">
                     <span className="text-2xl font-bold">MG</span>
                   </div>
-                  <p className="text-xs text-neutral-600">Maximilian Grabsch</p>
-                  <p className="text-xs text-neutral-700">Gründer, MRG Consulting</p>
+                  <p className="text-xs text-neutral-600">{a.founderName}</p>
+                  <p className="text-xs text-neutral-700">{a.founderRole}</p>
                 </div>
               </div>
             </motion.div>
@@ -99,7 +85,7 @@ export default function About() {
 
       {/* Story */}
       <section
-        className="border-y py-24 md:py-32"
+        className="border-y py-14 md:py-20"
         style={{ background: "#080e1f", borderColor: "rgba(255,255,255,0.07)" }}
       >
         <div className="mx-auto max-w-3xl px-6">
@@ -110,33 +96,18 @@ export default function About() {
             variants={stagger}
           >
             <motion.div variants={fadeUp} className="mb-10">
-              <SectionLabel>Die Geschichte</SectionLabel>
+              <SectionLabel>{a.storyLabel}</SectionLabel>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-                Warum MRG?
+                {a.storyHeadline}
               </h2>
             </motion.div>
 
             <motion.div variants={fadeUp} className="space-y-5 leading-relaxed text-neutral-400">
-              <p>
-                Als Entwickler hat Maximilian Grabsch jahrelang erlebt, wie klassisches
-                Recruiting funktioniert — oder eben nicht. Recruiter, die Stacks verwechseln.
-                Unternehmen, die Monate auf Kandidaten warten. Entwickler, die Spam-Nachrichten
-                mit völlig unpassenden Positionen erhalten.
-              </p>
-              <p>
-                Die Lösung war klar: Ein Recruiting-Service, bei dem jemand die technische
-                Seite wirklich versteht. Jemand, der selbst Code geschrieben hat, Interviews
-                führt, die etwas bedeuten, und Matches findet, die wirklich funktionieren.
-              </p>
-              <p>
-                MRG Consulting wurde mit dem Anspruch gegründet, dass jeder Kandidat im
-                Netzwerk persönlich geprüft wird — und jedes Unternehmen vorab auf
-                Remote-Reife und Teamkultur bewertet wird.
-              </p>
-
+              <p>{a.storyP1}</p>
+              <p>{a.storyP2}</p>
+              <p>{a.storyP3}</p>
               <blockquote className="mt-6 border-l-2 border-primary-500 pl-5 text-primary-300 italic">
-                &ldquo;Ein guter Entwickler ist nicht derjenige mit dem besten CV — sondern
-                derjenige, der zum Team und zum Problem passt.&rdquo;
+                &ldquo;{a.quote}&rdquo;
               </blockquote>
             </motion.div>
           </motion.div>
@@ -144,7 +115,7 @@ export default function About() {
       </section>
 
       {/* Values */}
-      <section className="py-24 md:py-32" style={{ background: "#080e1f" }}>
+      <section className="py-14 md:py-20" style={{ background: "#080e1f" }}>
         <div className="mx-auto max-w-5xl px-6">
           <motion.div
             initial="hidden"
@@ -152,31 +123,34 @@ export default function About() {
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
           >
-            <motion.div variants={fadeUp} className="mb-14 text-center">
-              <SectionLabel>Unsere Werte</SectionLabel>
+            <motion.div variants={fadeUp} className="mb-8 text-center">
+              <SectionLabel>{a.valuesLabel}</SectionLabel>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-                Was uns antreibt
+                {a.valuesHeadline}
               </h2>
             </motion.div>
 
             <motion.div variants={stagger} className="grid gap-5 md:grid-cols-3">
-              {values.map(({ Icon, title, desc }) => (
-                <motion.div
-                  key={title}
-                  variants={fadeUp}
-                  whileHover={{ y: -4 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                  className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-colors hover:border-primary-500/30 hover:bg-white/[0.07]"
-                  style={{ backdropFilter: "blur(8px)" }}
-                >
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mb-2 font-semibold text-white">{title}</h3>
-                  <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
-                </motion.div>
-              ))}
+              {a.values.map(({ title, desc }, i) => {
+                const Icon = VALUE_ICONS[i];
+                return (
+                  <motion.div
+                    key={i}
+                    variants={fadeUp}
+                    whileHover={{ y: -4 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-colors hover:border-primary-500/30 hover:bg-white/[0.07]"
+                    style={{ backdropFilter: "blur(8px)" }}
+                  >
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-500/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mb-2 font-semibold text-white">{title}</h3>
+                    <p className="text-sm leading-relaxed text-neutral-400">{desc}</p>
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </motion.div>
         </div>
@@ -185,7 +159,7 @@ export default function About() {
       <StatsSection />
 
       {/* Contact CTA */}
-      <section className="relative overflow-hidden py-24 md:py-32" style={{ background: "#080e1f" }}>
+      <section className="relative overflow-hidden py-14 md:py-20" style={{ background: "#080e1f" }}>
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
@@ -207,11 +181,9 @@ export default function About() {
             className="flex flex-col items-center gap-6"
           >
             <motion.h2 variants={fadeUp} className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-              <span className="gradient-text">Lernen Sie uns kennen</span>
+              <span className="gradient-text">{a.ctaHeadline}</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-neutral-400">
-              Ein kurzes Gespräch reicht — kostenlos und unverbindlich.
-            </motion.p>
+            <motion.p variants={fadeUp} className="text-neutral-400">{a.ctaSub}</motion.p>
             <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-3">
               <a
                 href={CALENDLY_URL}
@@ -219,14 +191,14 @@ export default function About() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-500"
               >
-                Termin buchen
+                {a.ctaBook}
                 <ArrowRight className="h-4 w-4" />
               </a>
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-6 py-3 text-sm font-semibold text-neutral-300 transition hover:border-white/30 hover:text-white"
               >
-                Schreiben Sie uns
+                {a.ctaContact}
               </Link>
             </motion.div>
           </motion.div>

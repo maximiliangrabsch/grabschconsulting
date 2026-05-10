@@ -5,103 +5,40 @@ import { Brain, Server, Layers, Code2, Shield } from "lucide-react";
 import { fadeUp, stagger } from "@/lib/animations";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/ui/radial-orbital-timeline";
+import { useLanguage } from "@/lib/i18n";
+import { useT } from "@/lib/translations";
 
-const techStacks: TimelineItem[] = [
-  {
-    id: 1,
-    title: "AI / ML",
-    date: "Expert",
-    content: "Wir entwickeln intelligente Systeme, die aus Daten lernen und echten Mehrwert schaffen.",
-    details: [
-      "Entwicklung maßgeschneiderter ML-Modelle",
-      "LLM-Integration & KI-Agenten",
-      "Datenanalyse & Predictive Analytics",
-      "NLP und Computer Vision",
-    ],
-    tags: ["Python", "PyTorch", "LangChain", "OpenAI", "Hugging Face"],
-    category: "AI",
-    icon: Brain,
-    relatedIds: [2, 3],
-    status: "completed",
-    energy: 95,
-  },
-  {
-    id: 2,
-    title: "Backend",
-    date: "Expert",
-    content: "Robuste, skalierbare Server-Architekturen, die auch unter Last zuverlässig performen.",
-    details: [
-      "RESTful & GraphQL APIs",
-      "Microservices & Event-Driven Architekturen",
-      "Datenbankdesign (SQL & NoSQL)",
-      "Cloud-Infrastruktur & DevOps",
-    ],
-    tags: ["Node.js", "Go", "Java", "PostgreSQL", "Docker", "Kubernetes"],
-    category: "Backend",
-    icon: Server,
-    relatedIds: [1, 4],
-    status: "completed",
-    energy: 90,
-  },
-  {
-    id: 3,
-    title: "Frontend",
-    date: "Expert",
-    content: "Moderne, performante Web-Applikationen mit exzellenter User Experience.",
-    details: [
-      "Komponentenbasierte UI-Entwicklung",
-      "Server-Side Rendering & Static Generation",
-      "State Management & Performance-Optimierung",
-      "Responsive Design & Accessibility",
-    ],
-    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    category: "Frontend",
-    icon: Layers,
-    relatedIds: [2, 4],
-    status: "completed",
-    energy: 88,
-  },
-  {
-    id: 4,
-    title: "Full-Stack",
-    date: "Expert",
-    content: "End-to-End-Entwicklung – vom Konzept bis zur produktionsreifen Anwendung.",
-    details: [
-      "Vollständige Produktentwicklung aus einer Hand",
-      "API-Design & Frontend-Integration",
-      "CI/CD-Pipelines & automatisierte Tests",
-      "Cloud-Deployment & Monitoring",
-    ],
-    tags: ["Next.js", "Prisma", "tRPC", "Vercel", "AWS"],
-    category: "Full-Stack",
-    icon: Code2,
-    relatedIds: [2, 3],
-    status: "completed",
-    energy: 85,
-  },
-  {
-    id: 5,
-    title: "Cyber Security",
-    date: "Expert",
-    content: "Wir identifizieren Schwachstellen bevor Angreifer es tun – und schließen sie nachhaltig.",
-    details: [
-      "Penetration Testing & Ethical Hacking",
-      "Security Audits & Code Reviews",
-      "SIEM-Implementierung & Monitoring",
-      "Compliance (ISO 27001, DSGVO)",
-    ],
-    tags: ["Kali Linux", "Burp Suite", "SIEM", "OWASP", "Zero Trust"],
-    category: "Security",
-    icon: Shield,
-    relatedIds: [1, 2],
-    status: "completed",
-    energy: 80,
-  },
+const STACK_ICONS = [Brain, Server, Layers, Code2, Shield];
+const STACK_TAGS = [
+  ["Python", "PyTorch", "LangChain", "OpenAI", "Hugging Face"],
+  ["Node.js", "Go", "Java", "PostgreSQL", "Docker", "Kubernetes"],
+  ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+  ["Next.js", "Prisma", "tRPC", "Vercel", "AWS"],
+  ["Kali Linux", "Burp Suite", "SIEM", "OWASP", "Zero Trust"],
 ];
+const STACK_CATEGORIES = ["AI", "Backend", "Frontend", "Full-Stack", "Security"];
+const STACK_RELATED = [[2, 3], [1, 4], [2, 4], [2, 3], [1, 2]];
 
 export function TechStackSection() {
+  const { lang } = useLanguage();
+  const t = useT(lang);
+
+  const techStacks: TimelineItem[] = t.tech.stacks.map((stack, i) => ({
+    id: i + 1,
+    title: stack.title,
+    date: "Expert",
+    content: stack.content,
+    details: [...stack.details],
+    tags: STACK_TAGS[i],
+    category: STACK_CATEGORIES[i],
+    icon: STACK_ICONS[i],
+    relatedIds: STACK_RELATED[i],
+    status: "completed" as const,
+    energy: [95, 90, 88, 85, 80][i],
+  }));
+
   return (
-    <section className="pt-12 md:pt-16 pb-4" style={{ background: "#080e1f" }}>
+    <section className="py-14 md:py-20" style={{ background: "#080e1f" }}>
       <div className="mx-auto max-w-5xl px-6">
         <motion.div
           initial="hidden"
@@ -110,13 +47,11 @@ export function TechStackSection() {
           variants={stagger}
         >
           <motion.div variants={fadeUp} className="mb-4 text-center">
-            <SectionLabel className="mb-3">Tech-Expertise</SectionLabel>
+            <SectionLabel className="mb-3">{t.tech.label}</SectionLabel>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-              Alle modernen Stacks — abgedeckt
+              {t.tech.headline}
             </h2>
-            <p className="mt-3 text-neutral-400">
-              Von KI bis Cyber Security – fahren Sie mit der Maus über einen Bereich für Details.
-            </p>
+            <p className="mt-3 text-neutral-400">{t.tech.sub}</p>
           </motion.div>
         </motion.div>
 

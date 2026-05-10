@@ -1,9 +1,9 @@
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ForWhomSection } from "@/components/sections/ForWhomSection";
 import { StatsSection } from "@/components/sections/StatsSection";
+import { ModelsSection } from "@/components/sections/ModelsSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { TechStackSection } from "@/components/sections/TechStackSection";
-import { WhyUsSection } from "@/components/sections/WhyUsSection";
 import { CtaSection } from "@/components/sections/CtaSection";
 
 export default function Home() {
@@ -12,9 +12,9 @@ export default function Home() {
       <HeroSection />
       <ForWhomSection />
       <StatsSection />
+      <ModelsSection />
       <ProcessSection />
       <TechStackSection />
-      <WhyUsSection />
       <CtaSection />
     </main>
   );

@@ -3,14 +3,13 @@
 import { motion } from "framer-motion";
 import { fadeUp, stagger } from "@/lib/animations";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-
-const stats = [
-  { value: 50, suffix: "+", label: "Entwickler im Netzwerk" },
-  { value: 100, suffix: "%", label: "Kandidaten persönlich geprüft" },
-  { value: 14, suffix: " Tage", label: "bis zum ersten Kandidaten" },
-];
+import { useLanguage } from "@/lib/i18n";
+import { useT } from "@/lib/translations";
 
 export function StatsSection() {
+  const { lang } = useLanguage();
+  const t = useT(lang);
+
   return (
     <section
       className="border-y"
@@ -25,9 +24,9 @@ export function StatsSection() {
           className="grid grid-cols-1 divide-y sm:grid-cols-3 sm:divide-x sm:divide-y-0"
           style={{ "--tw-divide-opacity": "1" } as React.CSSProperties}
         >
-          {stats.map(({ value, suffix, label }) => (
+          {t.stats.items.map(({ value, suffix, label }, i) => (
             <motion.div
-              key={label}
+              key={i}
               variants={fadeUp}
               className="flex flex-col items-center py-8 text-center sm:px-8 sm:py-0"
               style={{ borderColor: "rgba(255,255,255,0.07)" }}

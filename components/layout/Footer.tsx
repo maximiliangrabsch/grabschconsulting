@@ -1,9 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { NAV_LINKS, FOOTER_LEGAL_LINKS, CALENDLY_URL, COMPANY_NAME } from "@/lib/constants";
+import { CALENDLY_URL, COMPANY_NAME } from "@/lib/constants";
+import { useLanguage } from "@/lib/i18n";
+import { useT } from "@/lib/translations";
 
 export function Footer() {
+  const { lang } = useLanguage();
+  const t = useT(lang);
+
   return (
     <footer
       className="border-t"
@@ -24,17 +31,17 @@ export function Footer() {
               className="rounded-full"
             />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-500">
-              Professionelles Tech-Recruiting für Remote-Teams und Entwickler.
+              {t.footer.tagline}
             </p>
           </div>
 
           {/* Navigation */}
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-600">
-              Seiten
+              {t.footer.pages}
             </p>
             <ul className="space-y-2">
-              {NAV_LINKS.map((link) => (
+              {t.navLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -50,19 +57,17 @@ export function Footer() {
           {/* Legal + CTA */}
           <div>
             <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-neutral-600">
-              Rechtliches
+              {t.footer.legal}
             </p>
             <ul className="mb-6 space-y-2">
-              {FOOTER_LEGAL_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-500 transition hover:text-neutral-200"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/impressum"
+                  className="text-sm text-neutral-500 transition hover:text-neutral-200"
+                >
+                  {t.footer.impressum}
+                </Link>
+              </li>
             </ul>
             <a
               href={CALENDLY_URL}
@@ -70,7 +75,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-primary-500"
             >
-              Erstgespräch
+              {t.footer.bookCall}
               <ArrowRight className="h-3.5 w-3.5" />
             </a>
           </div>
@@ -84,7 +89,7 @@ export function Footer() {
           <p className="text-xs text-neutral-700">
             © {new Date().getFullYear()} {COMPANY_NAME}
           </p>
-          <p className="text-xs text-neutral-700">Alle Rechte vorbehalten</p>
+          <p className="text-xs text-neutral-700">{t.footer.allRights}</p>
         </div>
       </div>
     </footer>
