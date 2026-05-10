@@ -16,23 +16,13 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand */}
           <div>
-            {/* Crop to ibex only:
-                - Container 100×76px shows top ~53% of image → globe+ibex, no text
-                - contrast(999%) pushes inverted white bg to pure black
-                - mix-blend-mode:screen renders pure black as fully transparent
-                  against the dark footer → zero outline, only white ibex remains */}
-            <div className="relative overflow-hidden" style={{ width: 100, height: 76 }}>
-              <Image
-                src="/MRGconsulting.png"
-                alt="MRG Consulting"
-                fill
-                className="object-cover object-top"
-                style={{
-                  filter: "invert(1) contrast(999%) brightness(1.8)",
-                  mixBlendMode: "screen",
-                }}
-              />
-            </div>
+            <Image
+              src="/logorund.png"
+              alt="MRG Consulting"
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-neutral-500">
               Professionelles Tech-Recruiting für Remote-Teams und Entwickler.
             </p>

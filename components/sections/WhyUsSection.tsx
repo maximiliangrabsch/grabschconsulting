@@ -25,7 +25,7 @@ const features = [
 
 export function WhyUsSection() {
   return (
-    <section className="py-24 md:py-32" style={{ background: "#080e1f" }}>
+    <section className="pt-8 md:pt-10 pb-24 md:pb-32" style={{ background: "#080e1f" }}>
       <div className="mx-auto max-w-5xl px-6">
         <motion.div
           initial="hidden"

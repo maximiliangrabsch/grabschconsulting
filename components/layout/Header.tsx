@@ -2,10 +2,40 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { NAV_LINKS, CALENDLY_URL } from "@/lib/constants";
+
+// ── Pill nav tab ──────────────────────────────────────────────────
+
+function NavTab({
+  children,
+  href,
+  isActive,
+}: {
+  children: React.ReactNode;
+  href: string;
+  isActive: boolean;
+}) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className={`block rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-150 ${
+          isActive
+            ? "bg-primary-600 text-white"
+            : "text-white/70 hover:bg-primary-600 hover:text-white"
+        }`}
+      >
+        {children}
+      </Link>
+    </li>
+  );
+}
+
+// ── Header ────────────────────────────────────────────────────────
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -18,7 +48,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // close menu on route change
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
@@ -33,27 +62,30 @@ export function Header() {
       }}
     >
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        {/* Brand name */}
-        <Link href="/" className="shrink-0 text-sm font-semibold tracking-tight text-white">
-          MRG Consulting
+        {/* Brand */}
+        <Link href="/" className="flex shrink-0 items-center gap-2">
+          <Image
+            src="/logorund.png"
+            alt="MRG Consulting"
+            width={36}
+            height={36}
+            className="rounded-full"
+          />
+          <span className="text-sm font-semibold tracking-tight text-white">MRG Consulting</span>
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden items-center gap-6 md:flex">
+        {/* Desktop sliding pill nav */}
+        <ul className="hidden items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1 backdrop-blur-sm md:flex">
           {NAV_LINKS.map((link) => (
-            <Link
+            <NavTab
               key={link.href}
               href={link.href}
-              className={`text-sm transition-colors ${
-                pathname === link.href
-                  ? "text-white"
-                  : "text-neutral-400 hover:text-white"
-              }`}
+              isActive={pathname === link.href}
             >
               {link.label}
-            </Link>
+            </NavTab>
           ))}
-        </div>
+        </ul>
 
         {/* CTA + Mobile toggle */}
         <div className="flex items-center gap-3">
