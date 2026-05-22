@@ -32,59 +32,59 @@ export default function About() {
             initial="hidden"
             animate="visible"
             variants={stagger}
-            className="grid gap-12 lg:grid-cols-5"
+            className="grid gap-10 lg:grid-cols-5 lg:gap-12"
           >
-            {/* Text */}
-            <motion.div variants={slideInLeft} className="lg:col-span-3">
-              <SectionLabel>{a.label}</SectionLabel>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl" style={{ textWrap: "balance" } as React.CSSProperties}>
-                {a.headline1}{" "}
-                <span className="gradient-text">{a.headline2}</span>
-              </h1>
-              <p className="mt-5 text-lg leading-relaxed text-neutral-400">{a.sub}</p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href={CALENDLY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-500"
-                >
-                  {a.meetBtn}
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-6 py-3 text-sm font-semibold text-neutral-300 transition hover:border-white/30 hover:text-white"
-                >
-                  {a.contactBtn}
-                </Link>
-              </div>
-            </motion.div>
-
-            {/* Founder Photo */}
+            {/* Founder Photo — first on mobile, right on desktop */}
             <motion.div
               variants={fadeUp}
-              className="flex items-center justify-center lg:col-span-2"
+              className="order-first flex items-center justify-center lg:order-last lg:col-span-2"
             >
-              <div className="flex flex-col items-center gap-4">
-                {/* Oval photo */}
+              <div className="flex flex-col items-center gap-3">
                 <div
                   role="img"
                   aria-label={a.founderName}
+                  className="h-[220px] w-[176px] sm:h-[300px] sm:w-[240px]"
                   style={{
-                    width: 240,
-                    height: 300,
                     borderRadius: "50%",
                     backgroundImage: "url('/maxbildwebsite.jpg')",
                     backgroundSize: "cover",
                     backgroundPosition: "35% 15%",
                   }}
                 />
-                {/* Name below image */}
                 <div className="text-center">
                   <p className="text-sm font-semibold text-white">{a.founderName}</p>
                   <p className="text-xs text-primary-400">{a.founderRole}</p>
                 </div>
+              </div>
+            </motion.div>
+
+            {/* Text */}
+            <motion.div variants={slideInLeft} className="order-last lg:order-first lg:col-span-3">
+              <SectionLabel>{a.label}</SectionLabel>
+              <h1
+                className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl"
+                style={{ textWrap: "balance" } as React.CSSProperties}
+              >
+                {a.headline1}{" "}
+                <span className="gradient-text">{a.headline2}</span>
+              </h1>
+              <p className="mt-5 text-base leading-relaxed text-neutral-400 sm:text-lg">{a.sub}</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-primary-500"
+                >
+                  {a.meetBtn}
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/15 px-6 py-3 text-sm font-semibold text-neutral-300 transition hover:border-white/30 hover:text-white"
+                >
+                  {a.contactBtn}
+                </Link>
               </div>
             </motion.div>
           </motion.div>
