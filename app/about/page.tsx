@@ -37,7 +37,7 @@ export default function About() {
             {/* Text */}
             <motion.div variants={slideInLeft} className="lg:col-span-3">
               <SectionLabel>{a.label}</SectionLabel>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl">
+              <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-white md:text-5xl" style={{ textWrap: "balance" } as React.CSSProperties}>
                 {a.headline1}{" "}
                 <span className="gradient-text">{a.headline2}</span>
               </h1>
@@ -61,21 +61,29 @@ export default function About() {
               </div>
             </motion.div>
 
-            {/* Photo placeholder */}
+            {/* Founder Photo */}
             <motion.div
               variants={fadeUp}
               className="flex items-center justify-center lg:col-span-2"
             >
-              <div
-                className="flex h-64 w-64 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-neutral-600"
-                style={{ backdropFilter: "blur(8px)" }}
-              >
+              <div className="flex flex-col items-center gap-4">
+                {/* Oval photo */}
+                <div
+                  role="img"
+                  aria-label={a.founderName}
+                  style={{
+                    width: 240,
+                    height: 300,
+                    borderRadius: "50%",
+                    backgroundImage: "url('/maxbildwebsite.jpg')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "35% 15%",
+                  }}
+                />
+                {/* Name below image */}
                 <div className="text-center">
-                  <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-primary-600/20 text-primary-400">
-                    <span className="text-2xl font-bold">MG</span>
-                  </div>
-                  <p className="text-xs text-neutral-600">{a.founderName}</p>
-                  <p className="text-xs text-neutral-700">{a.founderRole}</p>
+                  <p className="text-sm font-semibold text-white">{a.founderName}</p>
+                  <p className="text-xs text-primary-400">{a.founderRole}</p>
                 </div>
               </div>
             </motion.div>
