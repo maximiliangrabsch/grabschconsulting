@@ -12,18 +12,18 @@ export default async function LeadsLoginPage({
       className="flex min-h-screen items-center justify-center px-6"
       style={{ background: "#faf6ee" }}
     >
-      <div className="w-full max-w-sm rounded-2xl border border-ink/10 bg-white/70 p-8 shadow-sm">
-        <p className="mb-3 inline-flex items-center rounded-full bg-terracotta-500/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-terracotta-700">
+      <div className="w-full max-w-sm rounded-2xl border border-[#211d19]/10 bg-white/70 p-8 shadow-sm">
+        <p className="mb-3 inline-flex items-center rounded-full bg-[#c1552a]/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#7d361b]">
           Internes Tool
         </p>
-        <h1 className="font-display mb-6 text-2xl font-bold tracking-tight text-ink">
+        <h1 className="mb-6 text-2xl font-bold tracking-tight text-[#211d19]">
           Leads-Dashboard
         </h1>
 
         <form action={loginToLeadsDashboard} className="space-y-4">
           <input type="hidden" name="from" value={from ?? "/leads"} />
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-ink-soft">
+            <label htmlFor="password" className="mb-1 block text-sm font-medium text-[#5a5248]">
               Passwort
             </label>
             <input
@@ -32,7 +32,7 @@ export default async function LeadsLoginPage({
               type="password"
               autoFocus
               required
-              className="w-full rounded-lg border border-ink/12 bg-white/70 px-4 py-3 text-sm text-ink placeholder:text-ink-faint transition focus:border-terracotta-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-terracotta-300"
+              className="w-full rounded-lg border border-[#211d19]/12 bg-white/70 px-4 py-3 text-sm text-[#211d19] placeholder:text-[#8c8377] transition focus:border-[#d8672f] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#e68a56]"
               placeholder="••••••••"
             />
           </div>
@@ -43,7 +43,7 @@ export default async function LeadsLoginPage({
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-terracotta-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-terracotta-600"
+            className="w-full rounded-lg bg-[#c1552a] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#9f4522]"
           >
             Anmelden
           </button>

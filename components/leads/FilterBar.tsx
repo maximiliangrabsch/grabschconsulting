@@ -62,16 +62,16 @@ export function FilterBar({
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-ink/10 bg-white/60 p-4">
+    <div className="flex flex-col gap-3 rounded-2xl border border-[#211d19]/10 bg-white/60 p-4">
       <div className="flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-ink-soft">Ort</label>
+          <label className="text-xs font-medium text-[#5a5248]">Ort</label>
           <input
             list="leads-orte"
             value={ort}
             onChange={(e) => setOrt(e.target.value)}
             placeholder="z. B. München"
-            className="w-40 rounded-lg border border-ink/12 bg-white/70 px-3 py-1.5 text-sm text-ink placeholder:text-ink-faint focus:border-terracotta-400 focus:outline-none focus:ring-1 focus:ring-terracotta-300"
+            className="w-40 rounded-lg border border-[#211d19]/12 bg-white/70 px-3 py-1.5 text-sm text-[#211d19] placeholder:text-[#8c8377] focus:border-[#d8672f] focus:outline-none focus:ring-1 focus:ring-[#e68a56]"
           />
           <datalist id="leads-orte">
             {filterOptions.orte.map((o) => (
@@ -81,13 +81,13 @@ export function FilterBar({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-ink-soft">Branche</label>
+          <label className="text-xs font-medium text-[#5a5248]">Branche</label>
           <input
             list="leads-branchen"
             value={branche}
             onChange={(e) => setBranche(e.target.value)}
             placeholder="z. B. Friseur"
-            className="w-40 rounded-lg border border-ink/12 bg-white/70 px-3 py-1.5 text-sm text-ink placeholder:text-ink-faint focus:border-terracotta-400 focus:outline-none focus:ring-1 focus:ring-terracotta-300"
+            className="w-40 rounded-lg border border-[#211d19]/12 bg-white/70 px-3 py-1.5 text-sm text-[#211d19] placeholder:text-[#8c8377] focus:border-[#d8672f] focus:outline-none focus:ring-1 focus:ring-[#e68a56]"
           />
           <datalist id="leads-branchen">
             {filterOptions.branchen.map((b) => (
@@ -97,8 +97,8 @@ export function FilterBar({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-ink-soft">
-            Min. Opportunity Score: <span className="tabular-nums text-ink">{minScore}</span>
+          <label className="text-xs font-medium text-[#5a5248]">
+            Min. Opportunity Score: <span className="tabular-nums text-[#211d19]">{minScore}</span>
           </label>
           <input
             type="range"
@@ -107,16 +107,16 @@ export function FilterBar({
             step={5}
             value={minScore}
             onChange={(e) => setMinScore(Number(e.target.value))}
-            className="w-40 accent-terracotta-500"
+            className="w-40 accent-[#c1552a]"
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium text-ink-soft">Sortierung</label>
+          <label className="text-xs font-medium text-[#5a5248]">Sortierung</label>
           <select
             value={filters.sort}
             onChange={(e) => pushParams({ sort: e.target.value })}
-            className="rounded-lg border border-ink/12 bg-white/70 px-3 py-1.5 text-sm text-ink focus:border-terracotta-400 focus:outline-none focus:ring-1 focus:ring-terracotta-300"
+            className="rounded-lg border border-[#211d19]/12 bg-white/70 px-3 py-1.5 text-sm text-[#211d19] focus:border-[#d8672f] focus:outline-none focus:ring-1 focus:ring-[#e68a56]"
           >
             <option value="score_desc">Opportunity Score ↓</option>
             <option value="updated_desc">Zuletzt aktualisiert ↓</option>
@@ -125,15 +125,15 @@ export function FilterBar({
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="mr-1 text-xs font-medium text-ink-soft">Status:</span>
+        <span className="mr-1 text-xs font-medium text-[#5a5248]">Status:</span>
         {LEAD_STATUSES.map((status) => (
           <button
             key={status}
             onClick={() => toggleStatus(status)}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
               filters.statuses.includes(status)
-                ? "border-terracotta-500/40 bg-terracotta-500/15 text-terracotta-700"
-                : "border-ink/10 bg-white/50 text-ink-soft hover:border-ink/20"
+                ? "border-[#c1552a]/40 bg-[#c1552a]/15 text-[#7d361b]"
+                : "border-[#211d19]/10 bg-white/50 text-[#5a5248] hover:border-[#211d19]/20"
             }`}
           >
             {LEAD_STATUS_LABELS[status]}
@@ -141,7 +141,7 @@ export function FilterBar({
         ))}
         <button
           onClick={setAllStatuses}
-          className="ml-1 rounded-full border border-ink/10 px-2.5 py-1 text-xs font-medium text-petrol-600 hover:bg-petrol-500/10"
+          className="ml-1 rounded-full border border-[#211d19]/10 px-2.5 py-1 text-xs font-medium text-[#1b4f49] hover:bg-[#2c6b63]/10"
         >
           Alle anzeigen
         </button>

@@ -36,32 +36,32 @@ function LeadCardImpl({
       ref={setNodeRef}
       {...(dragDisabled || pending ? {} : { ...attributes, ...listeners })}
       onClick={() => !isDragging && !pending && onOpen(lead)}
-      className={`group cursor-pointer rounded-xl border border-ink/10 bg-white/70 p-3.5 shadow-sm transition hover:border-terracotta-400/40 hover:shadow-md ${
+      className={`group cursor-pointer rounded-xl border border-[#211d19]/10 bg-white/70 p-3.5 shadow-sm transition hover:border-[#d8672f]/40 hover:shadow-md ${
         isDragging ? "opacity-40" : pending ? "opacity-60" : ""
       } ${dragDisabled || pending ? "" : "touch-none"}`}
     >
       <div className="mb-1.5 flex items-start justify-between gap-2">
-        <p className="font-display text-sm font-semibold leading-snug text-ink">{lead.name}</p>
-        {pending ? <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-ink-soft" /> : <ScoreBadge score={lead.opportunity_score} />}
+        <p className="text-sm font-semibold leading-snug text-[#211d19]">{lead.name}</p>
+        {pending ? <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-[#5a5248]" /> : <ScoreBadge score={lead.opportunity_score} />}
       </div>
 
-      <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-ink-soft">
+      <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-[#5a5248]">
         {lead.ort ? (
           <span className="inline-flex items-center gap-1">
-            <MapPin className="h-3 w-3 text-ink-faint" />
+            <MapPin className="h-3 w-3 text-[#8c8377]" />
             {lead.ort}
           </span>
         ) : null}
-        {lead.branche ? <span className="text-ink-soft">· {lead.branche}</span> : null}
+        {lead.branche ? <span className="text-[#5a5248]">· {lead.branche}</span> : null}
       </div>
 
       <div className="flex items-center justify-between gap-2">
         {lead.google_rating ? (
-          <span className="inline-flex items-center gap-1 text-xs font-medium text-ink-soft">
-            <Star className="h-3 w-3 fill-gold-600 text-gold-600" />
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-[#5a5248]">
+            <Star className="h-3 w-3 fill-[#8d6f3f] text-[#8d6f3f]" />
             {lead.google_rating.toFixed(1)}
             {lead.anzahl_bewertungen ? (
-              <span className="text-ink-soft">({lead.anzahl_bewertungen})</span>
+              <span className="text-[#5a5248]">({lead.anzahl_bewertungen})</span>
             ) : null}
           </span>
         ) : (
@@ -74,13 +74,13 @@ function LeadCardImpl({
             target="_blank"
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1 text-xs font-medium text-petrol-600 hover:text-petrol-700 hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-medium text-[#1b4f49] hover:text-[#123b37] hover:underline"
           >
             <Globe className="h-3 w-3" />
             Website
           </a>
         ) : (
-          <span className="rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-[11px] font-medium text-ink-soft">
+          <span className="rounded-full border border-[#211d19]/10 bg-[#211d19]/[0.04] px-2 py-0.5 text-[11px] font-medium text-[#5a5248]">
             Keine Website
           </span>
         )}

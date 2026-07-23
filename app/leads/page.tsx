@@ -40,15 +40,15 @@ export default async function LeadsPage({
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-5 flex items-center justify-between">
           <div>
-            <p className="mb-2 inline-flex items-center rounded-full bg-terracotta-500/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-terracotta-700">
+            <p className="mb-2 inline-flex items-center rounded-full bg-[#c1552a]/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#7d361b]">
               Internes Tool
             </p>
-            <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Leads-Dashboard</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-[#211d19]">Leads-Dashboard</h1>
           </div>
           <form action={logoutFromLeadsDashboard}>
             <button
               type="submit"
-              className="rounded-lg border border-ink/12 px-3 py-1.5 text-xs font-medium text-ink-soft transition hover:bg-ink/5"
+              className="rounded-lg border border-[#211d19]/12 px-3 py-1.5 text-xs font-medium text-[#5a5248] transition hover:bg-[#211d19]/5"
             >
               Abmelden
             </button>
