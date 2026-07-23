@@ -55,7 +55,7 @@ function buildSummaryEmailHtml(leads: FollowupLead[]): string {
               </p>
               <p style="margin:0;font-size:12px;color:#94a3b8">
                 Score <b style="color:#1a1a2e">${lead.opportunity_score ?? "–"}</b>
-                &nbsp;·&nbsp; Status <b style="color:#1a1a2e">${escapeHtml(LEAD_STATUS_LABELS[lead.status])}</b>
+                &nbsp;·&nbsp; Status <b style="color:#1a1a2e">${escapeHtml(LEAD_STATUS_LABELS[lead.status] ?? lead.status)}</b>
                 &nbsp;·&nbsp; Follow-up seit ${formatDate(lead.naechstes_followup)}
               </p>
             </a>
@@ -110,38 +110,47 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const supabase = getSupabaseServerClient();
-  const today = new Date().toISOString().slice(0, 10);
+  // Wrapped so a thrown error (missing env vars, Supabase/Resend network
+  // failure) still comes back as a structured JSON response instead of
+  // Next.js's generic unhandled-error page — this endpoint has no UI to
+  // surface errors in, so the response body is the only diagnostic surface.
+  try {
+    const supabase = getSupabaseServerClient();
+    const today = new Date().toISOString().slice(0, 10);
 
-  const { data, error } = await supabase
-    .from("leads")
-    .select("id, name, ort, branche, opportunity_score, status, naechstes_followup")
-    .lte("naechstes_followup", today)
-    .not("status", "in", "(kunde,abgelehnt)")
-    .order("opportunity_score", { ascending: false, nullsFirst: false });
+    const { data, error } = await supabase
+      .from("leads")
+      .select("id, name, ort, branche, opportunity_score, status, naechstes_followup")
+      .lte("naechstes_followup", today)
+      .not("status", "in", "(kunde,abgelehnt)")
+      .order("opportunity_score", { ascending: false, nullsFirst: false });
 
-  if (error) {
-    console.error("[cron/followup-check] query failed:", error);
-    return NextResponse.json({ ok: false, error: "Query failed" }, { status: 500 });
+    if (error) {
+      console.error("[cron/followup-check] query failed:", error);
+      return NextResponse.json({ ok: false, error: "Query failed" }, { status: 500 });
+    }
+
+    const leads = (data ?? []) as FollowupLead[];
+
+    if (leads.length === 0) {
+      return NextResponse.json({ ok: true, count: 0 });
+    }
+
+    const { error: sendError } = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: OWNER_EMAIL,
+      subject: `🔔 ${leads.length} überfällige Follow-ups heute`,
+      html: buildSummaryEmailHtml(leads),
+    });
+
+    if (sendError) {
+      console.error("[cron/followup-check] resend failed:", sendError);
+      return NextResponse.json({ ok: false, count: leads.length, error: "Email failed" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true, count: leads.length });
+  } catch (err) {
+    console.error("[cron/followup-check] unexpected error:", err);
+    return NextResponse.json({ ok: false, error: "Internal error" }, { status: 500 });
   }
-
-  const leads = (data ?? []) as FollowupLead[];
-
-  if (leads.length === 0) {
-    return NextResponse.json({ ok: true, count: 0 });
-  }
-
-  const { error: sendError } = await resend.emails.send({
-    from: FROM_EMAIL,
-    to: OWNER_EMAIL,
-    subject: `🔔 ${leads.length} überfällige Follow-ups heute`,
-    html: buildSummaryEmailHtml(leads),
-  });
-
-  if (sendError) {
-    console.error("[cron/followup-check] resend failed:", sendError);
-    return NextResponse.json({ ok: false, count: leads.length, error: "Email failed" }, { status: 500 });
-  }
-
-  return NextResponse.json({ ok: true, count: leads.length });
 }

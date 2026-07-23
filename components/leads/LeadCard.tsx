@@ -1,42 +1,48 @@
 "use client";
 
+import { memo } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { Star, Globe, MapPin } from "lucide-react";
+import { Star, Globe, MapPin, Loader2 } from "lucide-react";
 import { hasWebsite, Lead } from "@/lib/leads/types";
 import { ScoreBadge } from "./ScoreBadge";
 
-export function LeadCard({
+function LeadCardImpl({
   lead,
   onOpen,
   dragDisabled = false,
+  pending = false,
 }: {
   lead: Lead;
   onOpen: (lead: Lead) => void;
   dragDisabled?: boolean;
+  pending?: boolean;
 }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+  // `disabled` while pending: prevents re-dragging a card whose previous move
+  // hasn't been confirmed by the server yet, which is what caused the
+  // occasional "snaps back" / race-condition feel when dragging fast.
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: lead.id,
-    disabled: dragDisabled,
+    disabled: dragDisabled || pending,
     data: { lead },
   });
 
-  const style = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-    : undefined;
-
+  // No `transform` applied here on purpose: the board renders a <DragOverlay>
+  // for the actively-dragged card, so this source element must stay put and
+  // only dim — applying the drag transform to both caused a visible double
+  // motion (the card itself sliding *and* the overlay copy following the
+  // cursor), which read as jank/stutter during drag.
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      {...(dragDisabled ? {} : { ...attributes, ...listeners })}
-      onClick={() => !isDragging && onOpen(lead)}
+      {...(dragDisabled || pending ? {} : { ...attributes, ...listeners })}
+      onClick={() => !isDragging && !pending && onOpen(lead)}
       className={`group cursor-pointer rounded-xl border border-ink/10 bg-white/70 p-3.5 shadow-sm transition hover:border-terracotta-400/40 hover:shadow-md ${
-        isDragging ? "z-50 opacity-60 shadow-lg" : ""
-      } ${dragDisabled ? "" : "touch-none"}`}
+        isDragging ? "opacity-40" : pending ? "opacity-60" : ""
+      } ${dragDisabled || pending ? "" : "touch-none"}`}
     >
       <div className="mb-1.5 flex items-start justify-between gap-2">
         <p className="font-display text-sm font-semibold leading-snug text-ink">{lead.name}</p>
-        <ScoreBadge score={lead.opportunity_score} />
+        {pending ? <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-ink-soft" /> : <ScoreBadge score={lead.opportunity_score} />}
       </div>
 
       <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-ink-soft">
@@ -82,3 +88,5 @@ export function LeadCard({
     </div>
   );
 }
+
+export const LeadCard = memo(LeadCardImpl);

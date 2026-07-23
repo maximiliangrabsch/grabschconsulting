@@ -19,6 +19,7 @@ export function FilterBar({
   const [branche, setBranche] = useState(filters.branche);
   const [minScore, setMinScore] = useState(filters.minScore);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isFirstRender = useRef(true);
 
   function pushParams(next: Partial<Record<string, string>>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -30,7 +31,14 @@ export function FilterBar({
   }
 
   // Debounce free-text / slider changes so we don't navigate on every keystroke.
+  // Skips the first run — otherwise this fired 400ms after every page load
+  // with the same values already active, silently re-triggering the full
+  // column/count/filter-options query set a second time on every visit.
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       pushParams({ ort, branche, minScore: String(minScore) });

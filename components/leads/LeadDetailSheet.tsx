@@ -88,17 +88,30 @@ function LeadDetailPanel({
   async function handleNotesBlur() {
     if (notes === (lead.notizen ?? "")) return;
     setSavingNotes(true);
-    const res = await updateLeadNotes(lead.id, notes);
-    setSavingNotes(false);
-    if (res.success) onLeadUpdated(lead.id, { notizen: notes });
+    try {
+      const res = await updateLeadNotes(lead.id, notes);
+      if (res.success) onLeadUpdated(lead.id, { notizen: notes });
+    } catch (err) {
+      console.error("[leads] updateLeadNotes threw:", err);
+    } finally {
+      // finally, not just after the await: if updateLeadNotes throws instead
+      // of resolving {success:false}, this indicator would otherwise spin
+      // forever with no feedback.
+      setSavingNotes(false);
+    }
   }
 
   async function handleFollowupChange(value: string) {
     setFollowup(value);
     setSavingFollowup(true);
-    const res = await updateLeadFollowup(lead.id, value || null);
-    setSavingFollowup(false);
-    if (res.success) onLeadUpdated(lead.id, { naechstes_followup: value || null });
+    try {
+      const res = await updateLeadFollowup(lead.id, value || null);
+      if (res.success) onLeadUpdated(lead.id, { naechstes_followup: value || null });
+    } catch (err) {
+      console.error("[leads] updateLeadFollowup threw:", err);
+    } finally {
+      setSavingFollowup(false);
+    }
   }
 
   function openCompose() {
@@ -114,12 +127,21 @@ function LeadDetailPanel({
   function handleSend() {
     setSendError(null);
     startTransition(async () => {
-      const res = await sendLeadEmail(lead.id, recipient, subject, body);
-      if (res.success) {
-        setSendSuccess(true);
-        onLeadUpdated(lead.id, { status: "kontaktiert" });
-      } else {
-        setSendError(res.message);
+      try {
+        const res = await sendLeadEmail(lead.id, recipient, subject, body);
+        if (res.success) {
+          setSendSuccess(true);
+          // Only reflect the status flip locally if the server actually
+          // confirmed it — sendLeadEmail can succeed (email sent) while the
+          // secondary status update fails, and we don't want the UI to claim
+          // "kontaktiert" when the DB still disagrees.
+          if (res.statusUpdated) onLeadUpdated(lead.id, { status: "kontaktiert" });
+        } else {
+          setSendError(res.message);
+        }
+      } catch (err) {
+        console.error("[leads] sendLeadEmail threw:", err);
+        setSendError("E-Mail konnte nicht gesendet werden.");
       }
     });
   }
