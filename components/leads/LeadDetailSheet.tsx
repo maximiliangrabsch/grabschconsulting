@@ -34,7 +34,7 @@ function AuditRow({
       </span>
       <span
         className={`text-sm font-medium ${
-          ok === null ? "text-ink-faint" : ok ? "text-petrol-600" : "text-terracotta-600"
+          ok === null ? "text-ink-soft" : ok ? "text-petrol-600" : "text-terracotta-600"
         }`}
       >
         {detail ?? (ok === null ? "Unbekannt" : ok ? "Ja" : "Nein")}
@@ -142,11 +142,11 @@ function LeadDetailPanel({
           >
             <div className="flex items-start justify-between gap-3 border-b border-ink/10 px-6 py-5">
               <div>
-                <p className="section-label mb-1 inline-block border-l-2 border-terracotta-500 pl-2 text-xs uppercase tracking-wide text-ink-soft">
+                <p className="mb-1.5 inline-flex items-center rounded-full bg-terracotta-500/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-terracotta-700">
                   {LEAD_STATUS_LABELS[lead.status]}
                 </p>
                 <h2 className="font-display text-xl font-bold text-ink">{lead.name}</h2>
-                <p className="text-sm text-ink-faint">
+                <p className="text-sm text-ink-soft">
                   {[lead.branche, lead.ort].filter(Boolean).join(" · ")}
                 </p>
               </div>
@@ -177,14 +177,14 @@ function LeadDetailPanel({
                     {lead.website}
                   </a>
                 ) : (
-                  <span className="inline-block rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-xs text-ink-faint">
+                  <span className="inline-block rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-xs text-ink-soft">
                     Keine Website
                   </span>
                 )}
               </section>
 
               <section>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   Audit
                 </h3>
                 <div className="rounded-xl border border-ink/10 bg-white/60 px-4">
@@ -223,14 +223,14 @@ function LeadDetailPanel({
                   />
                 </div>
                 {lead.last_modified ? (
-                  <p className="mt-1.5 text-xs text-ink-faint">
+                  <p className="mt-1.5 text-xs text-ink-soft">
                     Zuletzt geprüft: {new Date(lead.last_modified).toLocaleDateString("de-DE")}
                   </p>
                 ) : null}
               </section>
 
               <section>
-                <label className="mb-1.5 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                <label className="mb-1.5 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   Notizen
                   {savingNotes ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
                 </label>
@@ -245,7 +245,7 @@ function LeadDetailPanel({
               </section>
 
               <section>
-                <label className="mb-1.5 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                <label className="mb-1.5 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-ink-soft">
                   Nächstes Follow-up
                   {savingFollowup ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
                 </label>
@@ -258,7 +258,7 @@ function LeadDetailPanel({
               </section>
 
               {lead.zugewiesen_an ? (
-                <p className="text-xs text-ink-faint">Zugewiesen an: {lead.zugewiesen_an}</p>
+                <p className="text-xs text-ink-soft">Zugewiesen an: {lead.zugewiesen_an}</p>
               ) : null}
 
               <section className="border-t border-ink/10 pt-5">
@@ -283,7 +283,7 @@ function LeadDetailPanel({
                         placeholder="kontakt@unternehmen.de"
                         className="w-full rounded-lg border border-ink/12 bg-white/80 px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-terracotta-400 focus:outline-none focus:ring-1 focus:ring-terracotta-300"
                       />
-                      <p className="mt-1 text-[11px] text-ink-faint">
+                      <p className="mt-1 text-[11px] text-ink-soft">
                         Keine E-Mail im Schema hinterlegt — bitte manuell eintragen (wird aus den
                         Notizen vorausgefüllt, falls dort eine Adresse steht).
                       </p>

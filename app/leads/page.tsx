@@ -40,7 +40,7 @@ export default async function LeadsPage({
       <div className="mx-auto max-w-[1600px]">
         <div className="mb-5 flex items-center justify-between">
           <div>
-            <p className="section-label mb-1 inline-block border-l-2 border-terracotta-500 pl-2 text-xs uppercase tracking-wide text-ink-soft">
+            <p className="mb-2 inline-flex items-center rounded-full bg-terracotta-500/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-terracotta-700">
               Internes Tool
             </p>
             <h1 className="font-display text-2xl font-bold tracking-tight text-ink">Leads-Dashboard</h1>

@@ -46,16 +46,16 @@ export function LeadCard({
             {lead.ort}
           </span>
         ) : null}
-        {lead.branche ? <span className="text-ink-faint">· {lead.branche}</span> : null}
+        {lead.branche ? <span className="text-ink-soft">· {lead.branche}</span> : null}
       </div>
 
       <div className="flex items-center justify-between gap-2">
         {lead.google_rating ? (
           <span className="inline-flex items-center gap-1 text-xs font-medium text-ink-soft">
-            <Star className="h-3 w-3 fill-gold-500 text-gold-500" />
+            <Star className="h-3 w-3 fill-gold-600 text-gold-600" />
             {lead.google_rating.toFixed(1)}
             {lead.anzahl_bewertungen ? (
-              <span className="text-ink-faint">({lead.anzahl_bewertungen})</span>
+              <span className="text-ink-soft">({lead.anzahl_bewertungen})</span>
             ) : null}
           </span>
         ) : (
@@ -74,7 +74,7 @@ export function LeadCard({
             Website
           </a>
         ) : (
-          <span className="rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-[11px] font-medium text-ink-faint">
+          <span className="rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-[11px] font-medium text-ink-soft">
             Keine Website
           </span>
         )}

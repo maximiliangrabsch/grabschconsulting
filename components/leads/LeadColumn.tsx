@@ -53,14 +53,14 @@ export function LeadColumn({
         {!loaded ? (
           <button
             onClick={onLoadMore}
-            className="rounded-lg border border-dashed border-ink/15 px-3 py-4 text-center text-xs text-ink-faint transition hover:border-terracotta-400/40 hover:text-ink-soft"
+            className="rounded-lg border border-dashed border-ink/15 px-3 py-4 text-center text-xs text-ink-soft transition hover:border-terracotta-400/40"
           >
             Nicht geladen — Filter passt {totalCount} Lead{totalCount === 1 ? "" : "s"} nicht an.
             <br />
             Klicken zum Laden.
           </button>
         ) : leads.length === 0 ? (
-          <p className="px-2 py-6 text-center text-xs text-ink-faint">Keine Leads in dieser Spalte.</p>
+          <p className="px-2 py-6 text-center text-xs text-ink-soft">Keine Leads in dieser Spalte.</p>
         ) : (
           leads.map((lead) => <LeadCard key={lead.id} lead={lead} onOpen={onOpenLead} />)
         )}

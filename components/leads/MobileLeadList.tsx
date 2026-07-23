@@ -20,7 +20,7 @@ export function MobileLeadList({
   const allLeads = LEAD_STATUSES.flatMap((status) => columns[status].leads);
 
   if (allLeads.length === 0) {
-    return <p className="py-10 text-center text-sm text-ink-faint">Keine Leads für die aktuellen Filter.</p>;
+    return <p className="py-10 text-center text-sm text-ink-soft">Keine Leads für die aktuellen Filter.</p>;
   }
 
   return (
@@ -33,7 +33,7 @@ export function MobileLeadList({
           <div onClick={() => onOpenLead(lead)} className="mb-2 flex items-start justify-between gap-2">
             <div>
               <p className="font-display text-sm font-semibold text-ink">{lead.name}</p>
-              <p className="text-xs text-ink-faint">
+              <p className="text-xs text-ink-soft">
                 {[lead.branche, lead.ort].filter(Boolean).join(" · ")}
               </p>
             </div>
@@ -51,7 +51,7 @@ export function MobileLeadList({
                 Website
               </a>
             ) : (
-              <span className="rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-[11px] text-ink-faint">
+              <span className="rounded-full border border-ink/10 bg-ink/[0.04] px-2 py-0.5 text-[11px] text-ink-soft">
                 Keine Website
               </span>
             )}

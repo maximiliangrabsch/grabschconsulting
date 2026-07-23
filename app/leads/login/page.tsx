@@ -13,7 +13,7 @@ export default async function LeadsLoginPage({
       style={{ background: "#faf6ee" }}
     >
       <div className="w-full max-w-sm rounded-2xl border border-ink/10 bg-white/70 p-8 shadow-sm">
-        <p className="section-label mb-2 inline-block border-l-2 border-terracotta-500 pl-2 text-xs uppercase tracking-wide text-ink-soft">
+        <p className="mb-3 inline-flex items-center rounded-full bg-terracotta-500/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-terracotta-700">
           Internes Tool
         </p>
         <h1 className="font-display mb-6 text-2xl font-bold tracking-tight text-ink">

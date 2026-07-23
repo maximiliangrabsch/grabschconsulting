@@ -125,7 +125,7 @@ export function FilterBar({
             className={`rounded-full border px-2.5 py-1 text-xs font-medium transition ${
               filters.statuses.includes(status)
                 ? "border-terracotta-500/40 bg-terracotta-500/15 text-terracotta-700"
-                : "border-ink/10 bg-white/50 text-ink-faint hover:border-ink/20"
+                : "border-ink/10 bg-white/50 text-ink-soft hover:border-ink/20"
             }`}
           >
             {LEAD_STATUS_LABELS[status]}
