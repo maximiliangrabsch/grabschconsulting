@@ -9,7 +9,7 @@ import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  if (pathname.startsWith('/grabsch-hero')) {
+  if (pathname.startsWith('/grabsch-hero') || pathname.startsWith('/leads')) {
     return <>{children}</>;
   }
 
