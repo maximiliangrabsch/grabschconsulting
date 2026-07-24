@@ -2,9 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Check, Loader2, Mail, ShieldCheck, ShieldAlert, Smartphone, Gauge, PhoneCall } from "lucide-react";
-import { hasWebsite, Lead, LEAD_STATUS_LABELS } from "@/lib/leads/types";
-import { sendLeadEmail, updateLeadFollowup, updateLeadNotes } from "@/lib/leads/actions";
+import { X, Check, ChevronDown, Loader2, Mail, ShieldCheck, ShieldAlert, Smartphone, Gauge, PhoneCall } from "lucide-react";
+import { hasWebsite, Lead, LeadStatus, LEAD_STATUSES, LEAD_STATUS_LABELS } from "@/lib/leads/types";
+import { sendLeadEmail, updateLeadFollowup, updateLeadNotes, updateLeadStatus } from "@/lib/leads/actions";
 import { buildLeadEmailDraft } from "@/lib/leads/email-templates";
 
 const EMAIL_RE = /[^\s@]+@[^\s@]+\.[^\s@]+/;
@@ -76,6 +76,8 @@ function LeadDetailPanel({
   const [followup, setFollowup] = useState(lead.naechstes_followup?.slice(0, 10) ?? "");
   const [savingNotes, setSavingNotes] = useState(false);
   const [savingFollowup, setSavingFollowup] = useState(false);
+  const [statusMenuOpen, setStatusMenuOpen] = useState(false);
+  const [savingStatus, setSavingStatus] = useState(false);
 
   const [composing, setComposing] = useState(false);
   const [subject, setSubject] = useState("");
@@ -111,6 +113,20 @@ function LeadDetailPanel({
       console.error("[leads] updateLeadFollowup threw:", err);
     } finally {
       setSavingFollowup(false);
+    }
+  }
+
+  async function handleStatusSelect(status: LeadStatus) {
+    setStatusMenuOpen(false);
+    if (status === lead.status) return;
+    setSavingStatus(true);
+    try {
+      const res = await updateLeadStatus(lead.id, status);
+      if (res.success) onLeadUpdated(lead.id, { status });
+    } catch (err) {
+      console.error("[leads] updateLeadStatus threw:", err);
+    } finally {
+      setSavingStatus(false);
     }
   }
 
@@ -163,12 +179,41 @@ function LeadDetailPanel({
             className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-[#211d19]/10 bg-[#faf6ee] shadow-2xl"
           >
             <div className="flex items-start justify-between gap-3 border-b border-[#211d19]/10 px-6 py-5">
-              <div>
-                <p className="mb-1.5 inline-flex items-center rounded-full bg-[#c1552a]/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#7d361b]">
-                  {LEAD_STATUS_LABELS[lead.status]}
-                </p>
+              <div className="min-w-0 flex-1">
                 <h2 className="text-xl font-bold text-[#211d19]">{lead.name}</h2>
-                <p className="text-sm text-[#5a5248]">
+
+                <div className="mt-1.5">
+                  <button
+                    onClick={() => setStatusMenuOpen((v) => !v)}
+                    disabled={savingStatus}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-[#c1552a]/15 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-[#7d361b] transition hover:bg-[#c1552a]/25 disabled:opacity-60"
+                  >
+                    {savingStatus ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <ChevronDown
+                        className={`h-3 w-3 transition-transform ${statusMenuOpen ? "rotate-180" : ""}`}
+                      />
+                    )}
+                    {LEAD_STATUS_LABELS[lead.status]}
+                  </button>
+
+                  {statusMenuOpen ? (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {LEAD_STATUSES.filter((s) => s !== lead.status).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => handleStatusSelect(s)}
+                          className="rounded-full border border-[#211d19]/10 bg-white/70 px-2.5 py-1 text-xs font-medium text-[#5a5248] transition hover:border-[#d8672f]/40 hover:bg-white hover:text-[#211d19]"
+                        >
+                          {LEAD_STATUS_LABELS[s]}
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+
+                <p className="mt-1.5 text-sm text-[#5a5248]">
                   {[lead.branche, lead.ort].filter(Boolean).join(" · ")}
                 </p>
               </div>
