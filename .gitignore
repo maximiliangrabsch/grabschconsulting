@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Private Unterlagen und Tool-Ordner – nicht ins Website-Repo
+/Bank Statements */
+/Invoices */
+/.agents/
+/.claude/

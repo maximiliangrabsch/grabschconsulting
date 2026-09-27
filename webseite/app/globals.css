@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #050505;
+  --color-ember-300: #fdba74;
+  --color-ember-400: #fb923c;
+  --color-ember-500: #f97316;
+  --color-ember-600: #ea580c;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-ink);
+}
+
+::selection {
+  background: rgba(249, 115, 22, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Rotierender Leistungs-Kreis */
+.orbit {
+  container-type: inline-size;
+  --orbit-r: 42cqw;
+}
+
+.orbit-spin,
+.orbit-counter {
+  animation: orbit-spin 60s linear infinite;
+  will-change: transform;
+}
+
+.orbit-counter {
+  animation-direction: reverse;
+}
+
+.orbit[data-paused] .orbit-spin,
+.orbit[data-paused] .orbit-counter {
+  animation-play-state: paused;
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-spin,
+  .orbit-counter {
+    animation: none;
+  }
+}
