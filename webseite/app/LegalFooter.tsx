@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 
-const CONTACT_EMAIL = "m.grabsch@proton.me";
+const CONTACT_EMAIL = "m.grabsch@mrg-consulting.online";
 const CONTACT_PHONE = "+49 172 4245048";
 const COMPANY = "MRG Consulting OÜ";
 const ADDRESS = "Paju tn 1a, 50603 Tartu linn, Tartu maakond, Estland";
